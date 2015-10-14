@@ -64,9 +64,9 @@ The spread of the distribution is expressed as its concentration, $\kappa$.
 
 *a* and *b* can be expressed in terms of mean, mode, and concentration.
 
-$a = \mu\kappa$ and $b = (1 - \mu)\kappa$
+$a = \mu\kappa$  and  $b = (1 - \mu)\kappa$
 
-$a = \omega(\kappa - 2) + 1$ and $b = (1 - \omega)(\kappa - 2) + 1$ for $\kappa > 2$
+$a = \omega(\kappa - 2) + 1$  and  $b = (1 - \omega)(\kappa - 2) + 1$ for $\kappa > 2$
 
 Larger $\kappa$ means greater confidence in our prior.
 
@@ -77,7 +77,7 @@ If the prior is a beta distribution, the posterior will be too.
 
 $$p(\theta |z, N) = \frac{\theta ^{(z-a+1)}(1 - \theta)^{(N - z + b - 1)}}{B(z +a, N - z + b)}$$
 
-$$\mu_posterior = \frac{z + a}{N + a + b}
+$$\mu_{posterior} = \frac{z + a}{N + a + b}$$
 
 Where $z$ is the number of affirmative results and $N$ is the total number of observations.
 
