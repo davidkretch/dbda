@@ -1,0 +1,95 @@
+---
+title: "Doing Bayesian Data Analysis Ch 10"
+output: html_document
+---
+
+# Model Comparison and Hierarchical Modeling
+
+> Bayesian model comparison is really just a case of Bayesian parameter 
+estimation applied to a hierarchical model in which the top-level parameter is 
+an index for the models. 
+
+## Model comparison with Bayes theorem
+
+Before, we estimated our model by finding the posterior probability of parameter
+$\theta$ by using Bayes theorem:
+
+$$
+p(\theta|D) = \frac{p(D|\theta)p(\theta)}{p(D)}
+$$
+
+We do model comparison in the same framework by considering $\theta$ alongside
+model index parameter $m$:
+
+$$
+p(\theta,m|D) = \frac{p(D|\theta,m)p(\theta,m)}{p(D)} \\
+              = \frac{p(D|\theta,m)p(\theta|m)p(m)}{p(D)}
+$$
+
+Now we have priors for $\theta$ associated with models $m$, $p(\theta|m)$, and a 
+prior on $m$, $p(m)$.
+
+Say we have models 1 and 2. If we estimate this hierarchical model of models 
+using MCMC, the chain will jump between the two models -- $m$ will take on 
+values 1 and 2 -- according to their posterior probability, which tells us which 
+model is more likely. 
+
+---
+
+## Bayes factors
+
+We can estimate the probability of a given model by marginalizing 
+(summing/integrating) over $\theta$, i.e. 
+$p(D|m) = \int_{\theta}p(D|\theta,m)d\theta$:
+
+$$
+p(m|D) = \frac{p(D|m)p(m)}{p(D)}
+$$
+
+We can use this to compare two models by looking at the ratio:
+
+$$
+\frac{p(m=1|D)}{p(m=2|D)} = \frac{p(D|m=1)p(m=1)/p(D)}{p(D|m=2)p(m=2)/p(D)}
+$$
+
+$\frac{p(D|m=1)}{p(D|m=2)}$ is the Bayes factor, the ratio of the 
+probabilities of the data in models 1 and 2.
+
+Note that these probabilities are marginalized over the allowable parameter 
+values in models 1 and 2; they are not just probabilities of the data at a 
+single parameter value (or set of values), as in a likelihood ratio.
+
+Kruschke: "One convention for converting the magnitude of the BF to a discrete 
+decision about the models is that there is "substantial" evidence for model m=1 
+when the BF exceeds 3.0 and, equivalently, "substantial" evidence for model m=2 
+when the BF is less than 1/3."
+
+Andrew Gelman and Donald Rubin [disagree with Bayes factors and model 
+comparison](http://www.stat.columbia.edu/~gelman/research/published/avoiding.pdf): 
+"We believe model selection to be relatively unimportant compared to the task of 
+constructing realistic models that agree with both theory and data. In most 
+cases we would prefer to fit a complicated model [...] and then summarize it 
+appropriately to answer substantive questions of interest"
+
+---
+
+## Implementation
+
+
+### Autocorrelation and pseudopriors
+
+
+---
+
+## Model averaging
+
+
+---
+
+## Model complexity
+
+
+--- 
+
+## Sensitivity to priors
+
