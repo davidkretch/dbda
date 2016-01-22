@@ -21,7 +21,7 @@ Two approaches:
 * ROPE limits are up to the analyst
 
 * Because MCMC is nondeterminstic, the endpoints of HDIs are random, so an HDI 
-that is very near a ROPE could under a different seed be on the other side.
+that is very near a ROPE could otherwise have been on the other side.
 
 * For model comparison approach, "it must be theoretically meaningful for the 
-parameter value to be exactly the null value. "
+parameter value to be exactly the null value."
