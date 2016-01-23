@@ -9,7 +9,7 @@ output: ioslides_presentation
 ## Experiment goals
 
 * Reject a null value
-    + region of practical equivalence around null excludes HDI
+    + HDI excludes region of practical equivalence around null
 
 * Accept a null value
     + HDI includes null
@@ -135,8 +135,8 @@ for (i in seq_along(sample_sizes)) {
     posterior <- stan(data = data, fit = fit, chains = 1)
     
     # 4. does HDI exclude ROPE?
-    hdi_theta <- hdi(extract(posterior)$mu)
-    success <- !overlap(c(-0.02, 0.02), hdi_theta)
+    hdi_mu <- hdi(extract(posterior)$mu)
+    success <- !overlap(c(-0.02, 0.02), hdi_mu)
     sim_results[i, j] <- success
   }
 }
