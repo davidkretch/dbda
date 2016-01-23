@@ -1,0 +1,49 @@
+---
+title: "Doing Bayesian Data Analysis Ch 13"
+output: ioslides_presentation
+---
+
+# Power Analysis
+
+
+## Experiment goals
+
+* Reject a null value
+    + region of practical equivalence around null excludes HDI
+
+* Accept a null value
+    + HDI includes null
+
+* Achieve precision in estimation
+    + width of HDI is below a given maximum
+    
+
+## Experiments and power
+
+* These goals can only be achieved probablistically.
+
+* The probability of achieving the goal (e.g. rejecting a null value) is the 
+power of the experiment.
+
+* Methods of increasing power:
+    + Reduce experiment noise (e.g. remove other random influences)
+    + Increase magnitude of effect (e.g. use large doses of treatment)
+    + Increase sample size
+
+
+## Calculating power
+
+* Depends on
+    + hypothetical distribution of effects in the population being measured
+    + a specified data-sampling plan
+
+
+## Calculating power
+
+1. From the hypothetical distribution of parameter values, randomly generate
+representative values.
+2. From the representative parameter values, generate a random sample of 
+data, using the planned sampling method.
+3. From the simulated sample of data, compute the posterior estimate.
+4. From the posterior estimate, tally whether or not the goals were attained.
+5. Repeat the above steps many times, to approximate the power.
