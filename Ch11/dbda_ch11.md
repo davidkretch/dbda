@@ -1,9 +1,4 @@
----
-title: "Doing Bayesian Data Analysis Ch 11"
-output: 
-  ioslides_presentation: 
-    keep_md: yes
----
+# Doing Bayesian Data Analysis Ch 11
 
 ## Null hypothesis significance testing
 
@@ -83,7 +78,7 @@ the parameters that describe the conditions."
 
 ## Kruschke on intentions vs priors
 
-"The experimenter’s stopping and testing intentions are mysterious, capricious, 
+"The experimenterâs stopping and testing intentions are mysterious, capricious, 
 idiosyncratic"
 
 "Prior beliefs are overt, explicitly debated, and founded on publicly accessible

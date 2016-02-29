@@ -1,15 +1,25 @@
----
-title: "Doing Bayesian Data Analysis Ch. 7"
-output: 
-  html_document: 
-    keep_md: yes
----
+# Doing Bayesian Data Analysis Ch. 7
 
 # Load libraries, functions, etc.
 
-```{r}
-source("../DBDA2Eprograms/DBDA2E-utilities.R")
 
+```r
+source("../DBDA2Eprograms/DBDA2E-utilities.R")
+```
+
+```
+## 
+## *********************************************************************
+## Kruschke, J. K. (2015). Doing Bayesian Data Analysis, Second Edition:
+## A Tutorial with R, JAGS, and Stan. Academic Press / Elsevier.
+## *********************************************************************
+```
+
+```
+## Loading required package: coda
+```
+
+```r
 # Specify the data, to be used in the likelihood function.
 myData = c(rep(0,6),rep(1,14))
 
@@ -184,25 +194,34 @@ plot( trajHead , trajTail , pch="." , col="skyblue" , main=bquote( list( "Prpsl.
 
 ## SD = 0.02
 
-```{r}
+
+```r
 metropolisPlot(metropolis(myData, 0.02))
 ```
+
+![](dbda_ch7_files/figure-html/unnamed-chunk-2-1.png) 
 
 ---
 
 ## SD = 0.2
 
-```{r}
+
+```r
 metropolisPlot(metropolis(myData, 0.2))
 ```
+
+![](dbda_ch7_files/figure-html/unnamed-chunk-3-1.png) 
 
 ---
 
 ## SD = 2
 
-```{r}
+
+```r
 metropolisPlot(metropolis(myData, 2))
 ```
+
+![](dbda_ch7_files/figure-html/unnamed-chunk-4-1.png) 
 
 ---
 
@@ -214,36 +233,63 @@ metropolisPlot(metropolis(myData, 2))
 
 > (B) Make a plot of the prior. Hint: theta = seq(0,1,length=501); plot (theta , (cos(4*pi*theta)+1)^2/1.5 ) 
 
-```{r}
+
+```r
 theta = seq(0,1,length=501)
 plot (theta , (cos(4*pi*theta)+1)^2/1.5 ) 
 ```
+
+![](dbda_ch7_files/figure-html/unnamed-chunk-5-1.png) 
 
 > (C) In the script BernMetrop.R, find the function definition that specifies the prior distribution. Inside that function definition, comment out the line that assigns a beta density to pTheta, and instead put in a trimodal prior like this:
 #pTheta = dbeta( theta,1,1) pTheta = (cos(4*pi*theta)+1)^2/1.5
 To have the Metropolis algorithm explore the prior, we give it empty data. Find the line in the script that specifies the data and set myData = c(). Run the script, using a proposal SD=0.2. Include the graphical output in your write-up. Does the histogram of the trajectory look like the graph of the previous part of the exercise? 
 
-```{r}
+
+```r
 body(prior)[[2]][[3]] <- substitute((cos(4*pi*theta)+1)^2/1.5)
 prior
+```
+
+```
+## function (theta) 
+## {
+##     pTheta = (cos(4 * pi * theta) + 1)^2/1.5
+##     pTheta[theta > 1 | theta < 0] = 0
+##     return(pTheta)
+## }
+```
+
+```r
 metropolisPlot(metropolis(c(), 0.2))
 ```
 
+![](dbda_ch7_files/figure-html/unnamed-chunk-6-1.png) 
+
 > (D) Repeat the previous part but now with myData = c(0,1,1). Include the graphical output in your write-up. Does the posterior distribution make sense? Explain why. 
 
-```{r}
+
+```r
 metropolisPlot(metropolis(c(0,1,1), 0.2))
 ```
 
+![](dbda_ch7_files/figure-html/unnamed-chunk-7-1.png) 
+
 > (E) Repeat the previous part but now with proposalSD=0.02. Include the graphical output in your write-up. Does the posterior distribution make sense? Explain why not; what has gone wrong? If we did not know from the previous part that this output was unrepresentative of the true posterior, how could we try to check? Hint: See next part. 
 
-```{r}
+
+```r
 metropolisPlot(metropolis(c(0,1,1), 0.02))
 ```
+
+![](dbda_ch7_files/figure-html/unnamed-chunk-8-1.png) 
 
 > (F) Repeat the previous part but now with the initial position at 0.99: trajectory[1] = 0.99. In conjunction with the previous part, what does this result tell us?
 
-```{r}
+
+```r
 body(metropolis)[[4]][[3]] <- 0.99
 metropolisPlot(metropolis(c(0,1,1), 0.02))
 ```
+
+![](dbda_ch7_files/figure-html/unnamed-chunk-9-1.png) 

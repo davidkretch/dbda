@@ -1,6 +1,8 @@
 ---
 title: "Doing Bayesian Data Analysis Ch 13"
-output: ioslides_presentation
+output: 
+  ioslides_presentation: 
+    keep_md: yes
 ---
 
 # Power Analysis

@@ -1,9 +1,4 @@
----
-title: "Doing Bayesian Data Analysis Ch 12"
-output: 
-  ioslides_presentation: 
-    keep_md: yes
----
+# Doing Bayesian Data Analysis Ch 12
 
 ## Bayesian testing
 

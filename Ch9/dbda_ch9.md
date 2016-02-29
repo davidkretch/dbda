@@ -1,9 +1,4 @@
----
-title: 'Doing Bayesian Data Analysis Ch 9: Hierarchical Models'
-output: 
-  html_document: 
-    keep_md: yes
----
+# Doing Bayesian Data Analysis Ch 9: Hierarchical Models
 
 ## Exercise 9.1
 
@@ -16,8 +11,29 @@ we change the prior to other reasonably vague and noncommittal distributions. In
 particular, we will examine a gamma distributed prior on K that had a mode of 
 1.0 and a standard deviation of 10.0. 
 
-```{r}
+
+```r
 library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
 library(tidyr)
 
 path <- "../DBDA2Eprograms"
@@ -25,9 +41,31 @@ path <- "../DBDA2Eprograms"
 touch <- read.csv(file.path(path, "TherapeuticTouchData.csv"))
 
 head(touch)
+```
 
+```
+##   y   s
+## 1 1 S01
+## 2 0 S01
+## 3 0 S01
+## 4 0 S01
+## 5 0 S01
+## 6 0 S01
+```
+
+```r
 table(touch$s)
+```
 
+```
+## 
+## S01 S02 S03 S04 S05 S06 S07 S08 S09 S10 S11 S12 S13 S14 S15 S16 S17 S18 
+##  10  10  10  10  10  10  10  10  10  10  10  10  10  10  10  10  10  10 
+## S19 S20 S21 S22 S23 S24 S25 S26 S27 S28 
+##  10  10  10  10  10  10  10  10  10  10
+```
+
+```r
 touch_agg <- touch %>% 
   group_by(s) %>% 
   summarize(n = n(), 
@@ -36,7 +74,26 @@ touch_agg <- touch %>%
 touch_agg
 ```
 
-```{r, results='hide'}
+```
+## Source: local data frame [28 x 3]
+## 
+##         s     n     y
+##    (fctr) (int) (int)
+## 1     S01    10     1
+## 2     S02    10     2
+## 3     S03    10     3
+## 4     S04    10     3
+## 5     S05    10     3
+## 6     S06    10     3
+## 7     S07    10     3
+## 8     S08    10     3
+## 9     S09    10     3
+## 10    S10    10     3
+## ..    ...   ...   ...
+```
+
+
+```r
 stan_data <- list(y = touch_agg$y, 
                   trials = touch_agg$n, 
                   N = nrow(touch_agg))
@@ -53,9 +110,20 @@ they emphasize. The result is shown in Figure 9.18. Relative to each other,
 which gamma distribution favors values of K between about 0.1 and 75? Which 
 gamma distribution favors values of K that are tiny or greater than 75? 
 
-```{r}
-library(ggfortify)
 
+```r
+library(ggfortify)
+```
+
+```
+## Loading required package: proto
+```
+
+```
+## Loading required package: ggplot2
+```
+
+```r
 # mean 1, sd 10
 p <- ggdistribution(dgamma, 
                     seq(0, 100, 0.01), 
@@ -72,9 +140,15 @@ p <- ggdistribution(dgamma,
                p = p)
 
 p + coord_cartesian(ylim = c(0, 0.1))
+```
 
+![](dbda_ch9_files/figure-html/unnamed-chunk-3-1.png)
+
+```r
 p + coord_cartesian(ylim = c(0, 0.001))
 ```
+
+![](dbda_ch9_files/figure-html/unnamed-chunk-3-2.png)
 
 > (C) In the program Jags-Ydich-XnomSsubj-MbinomBetaOmegaKappa.R, find the line 
 in the model specification for the prior on kappaMinusTwo. Run the program once 
@@ -90,9 +164,33 @@ saved graph files.
 This Stan code results in a lot of thrown exceptions for invalid proposals 
 given the constraints on the variables.
 
-```{r, results='hide'}
-library(rstan)
 
+```r
+library(rstan)
+```
+
+```
+## rstan (Version 2.9.0-3, packaged: 2016-02-11 15:54:41 UTC, GitRev: 05c3d0058b6a)
+```
+
+```
+## For execution on a local, multicore CPU with excess RAM we recommend calling
+## rstan_options(auto_write = TRUE)
+## options(mc.cores = parallel::detectCores())
+```
+
+```
+## 
+## Attaching package: 'rstan'
+```
+
+```
+## The following object is masked from 'package:tidyr':
+## 
+##     extract
+```
+
+```r
 model_code <- "
 data {
   int<lower=0> N;
@@ -128,7 +226,8 @@ particular, for which prior does the marginal posterior distribution on K have a
 bigger large-value tail? When K is larger, what effect does that have on 
 shrinkage of the thetas values? 
 
-```{r}
+
+```r
 mean_1_kappa <- rstan::extract(mean_1_fit)$kappa
 mode_1_kappa <- rstan::extract(mode_1_fit)$kappa
 
@@ -136,7 +235,11 @@ ggplot() +
   geom_density(aes(mean_1_kappa), fill = "blue", alpha = 0.5) + 
   geom_density(aes(mode_1_kappa), fill = "red", alpha = 0.5) + 
   xlab("kappa posterior")
+```
 
+![](dbda_ch9_files/figure-html/unnamed-chunk-5-1.png)
+
+```r
 mean_1_theta <- rstan::extract(mean_1_fit)$theta
 mode_1_theta <- rstan::extract(mode_1_fit)$theta
 
@@ -147,8 +250,11 @@ ggplot() +
   geom_violin(aes(subject, theta), 
               data = gather(as.data.frame(mode_1_theta), subject, theta), 
               fill = "red", alpha = 0.5)
-  
+```
 
+![](dbda_ch9_files/figure-html/unnamed-chunk-5-2.png)
+
+```r
 touch_est <- touch_agg %>% 
   mutate(rate = y / n, 
          mean_1_theta = colMeans(mean_1_theta), 
@@ -160,8 +266,9 @@ ggplot(touch_est) +
   geom_segment(aes(x = rate, xend = mode_1_theta, y = 0.25, yend = 0.75), 
                arrow = arrow(length = unit(0.1, "cm")), color = "red") + 
   ylim(0, 1)
-
 ```
+
+![](dbda_ch9_files/figure-html/unnamed-chunk-5-3.png)
 
 > (E) Which prior do you think is more appropriate? To properly answer this 
 question, you should do the next exercise! 
@@ -181,8 +288,8 @@ exercise. You may want to change the file name root for the saved graphics
 files. For both priors, include the graphs of the prior distributions on thetas and 
 the differences of thetas's such as theta[1]-theta[28]. See Figure 9.19. 
 
-```{r, results='hide'}
 
+```r
 no_data_model_code <- "
 data {
   int<lower=0> N;
@@ -215,7 +322,8 @@ mode_1_no_data_fit <- stan(model_code = mode_1_no_data_code,
                            data = stan_data, algorithm = "NUTS")
 ```
 
-```{r}
+
+```r
 # this doesn't really seem to work with Stan
 mean_1_theta_prior <- as.numeric(extract(mean_1_no_data_fit)$theta)
 mode_1_theta_prior <- as.numeric(extract(mode_1_no_data_fit)$theta)
@@ -223,7 +331,11 @@ mode_1_theta_prior <- as.numeric(extract(mode_1_no_data_fit)$theta)
 ggplot() + 
   geom_density(aes(mean_1_theta_prior), fill = "blue", alpha = 0.5) + 
   geom_density(aes(mode_1_theta_prior), fill = "red", alpha = 0.5)
+```
 
+![](dbda_ch9_files/figure-html/unnamed-chunk-7-1.png)
+
+```r
 # try plotting the prior for theta directly, using the means of the prior distributions
 # mean 1, sd 10
 omega <- 1 / (1 + 1)
@@ -246,6 +358,8 @@ p <- ggdistribution(dbeta,
 
 p + coord_cartesian(xlim = c(0, 1))
 ```
+
+![](dbda_ch9_files/figure-html/unnamed-chunk-7-2.png)
 
 > (A) Explain why the implied prior distribution on individual thetas has rounded 
 shoulders (instead of being essentially uniform) when using a prior on K that 

@@ -1,9 +1,4 @@
----
-title: "Doing Bayesian Data Analysis Ch 10"
-output: 
-  ioslides_presentation: 
-    keep_md: yes
----
+# Doing Bayesian Data Analysis Ch 10
 
 ## Bayesian model comparison
 
@@ -122,7 +117,8 @@ model {
 
 Set up model
 
-```{r}
+
+```r
 model_string <- "
 data {
   int<lower=0> N;
@@ -148,34 +144,66 @@ model {
 
 ## Implementation {.smaller}
 
-```{r, include=FALSE}
-library(rstan)
-```
 
-```{r, results='hide'}
+
+
+```r
 set.seed(1)
 y <- rbinom(100, size = 1, prob = 0.75)
 stan_data <- list(N = length(y), y = y)
 fit <- stan(model_code = model_string, data = stan_data)
 ```
 
-```{r}
+
+```r
 fit
+```
+
+```
+## Inference for Stan model: 3c1f12f899c86c901635ee95d36138fe.
+## 4 chains, each with iter=2000; warmup=1000; thin=1; 
+## post-warmup draws per chain=1000, total post-warmup draws=4000.
+## 
+##          mean se_mean   sd   2.5%    25%    50%    75%  97.5% n_eff Rhat
+## m        0.75    0.00 0.15   0.51   0.62   0.75   0.88   0.99   935 1.00
+## theta1   0.29    0.00 0.13   0.08   0.19   0.28   0.37   0.57  1273 1.00
+## theta2   0.73    0.00 0.04   0.64   0.70   0.73   0.76   0.81  1051 1.00
+## theta    0.73    0.00 0.04   0.64   0.70   0.73   0.76   0.81  1079 1.00
+## lp__   -75.94    0.05 1.41 -79.71 -76.59 -75.58 -74.91 -74.32   804 1.01
+## 
+## Samples were drawn using NUTS(diag_e) at Sun Feb 28 22:03:11 2016.
+## For each parameter, n_eff is a crude measure of effective sample size,
+## and Rhat is the potential scale reduction factor on split chains (at 
+## convergence, Rhat=1).
 ```
 
 ## Priors {.smaller}
 
-```{r}
+
+```r
 par(mfcol = c(1, 2))
 curve(dbeta(x, shape1 = 3.5, shape2 = 8.5), 0, 1, main = "Model 1")
 curve(dbeta(x, shape1 = 8.5, shape2 = 3.5), 0, 1, main = "Model 2")
 ```
 
+![](dbda_ch10_files/figure-html/unnamed-chunk-5-1.png)
+
 ## Results
 
-```{r, fig.height=3}
+
+```r
 plot(fit)
 ```
+
+```
+## ci_level: 0.8 (80% intervals)
+```
+
+```
+## outer_level: 0.95 (95% intervals)
+```
+
+![](dbda_ch10_files/figure-html/unnamed-chunk-6-1.png)
 
 ## Autocorrelation
 

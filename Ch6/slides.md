@@ -1,9 +1,4 @@
----
-title: "Chapter 6: Inferring a Binomial Probability via Exact Mathematical Analysis"
-output: 
-  ioslides_presentation: 
-    keep_md: yes
----
+# Chapter 6: Inferring a Binomial Probability via Exact Mathematical Analysis
 
 # Notes
 
@@ -39,12 +34,14 @@ Deriving the mathematical form of the posterior credibility of parameter values 
 Prior beliefs that pair in a mathematically tractable way to the Bernoulli distribution can be expressed as the *beta distribution*, a function of $\theta$, where the denominator is the normalizer, the *beta function*.
 
 $$p(\theta |a,b) = \frac{\theta^{(a - 1)}(1 - \theta)^{(b - 1)}}{B(a,b)}$$
-```{r, eval = FALSE}
+
+```r
 dbeta(theta, a, b)
 ```
 
 $$B(a,b) = \int_0^1 d\theta  \theta^{(a - 1)}(1 - \theta)^{(b - 1)}$$
-```{r, eval = FALSE}
+
+```r
 beta(a, b)
 ```
 
@@ -97,91 +94,184 @@ Only simple likelihood functions have conjugate (mathematically tractable) prior
 
 ## Setup
 
-```{r}
+
+```r
 setwd("~\\dbda")
 r <- getOption("repos")
 r["CRAN"] <- "http://watson.nci.nih.gov/cran_mirror/"
 options(repos = r)
 source("DBDA2Eprograms\\DBDA2E-utilities.R")
+```
+
+```
+## 
+## *********************************************************************
+## Kruschke, J. K. (2015). Doing Bayesian Data Analysis, Second Edition:
+## A Tutorial with R, JAGS, and Stan. Academic Press / Elsevier.
+## *********************************************************************
+```
+
+```
+## Loading required package: coda
+```
+
+```r
 source("DBDA2Eprograms\\BernBeta.R")
 ```
 
 ## 6.1.a
 
-```{r}
+
+```r
 BernBeta(priorBetaAB = c(4, 4), Data = 1)
+```
+
+![](slides_files/figure-html/unnamed-chunk-4-1.png) 
+
+```
+## [1] 5 4
 ```
 
 ## 6.1.b
 
-```{r}
+
+```r
 BernBeta(priorBetaAB = c(5, 4), Data = 1)
+```
+
+![](slides_files/figure-html/unnamed-chunk-5-1.png) 
+
+```
+## [1] 6 4
 ```
 
 ## 6.1.c
 
-```{r}
+
+```r
 BernBeta(priorBetaAB = c(6, 4), Data = 0)
+```
+
+![](slides_files/figure-html/unnamed-chunk-6-1.png) 
+
+```
+## [1] 6 5
 ```
 
 ## 6.1.d
 
-```{r}
+
+```r
 BernBeta(priorBetaAB = c(4, 4), Data = c(0, 1, 1))
+```
+
+![](slides_files/figure-html/unnamed-chunk-7-1.png) 
+
+```
+## [1] 6 5
 ```
 
 ## 6.2.a
 
-```{r}
+
+```r
 BernBeta(priorBetaAB = c(1, 1),
          Data = c(rep(1, 58), rep(0, 100 - 58)),
          showHDI = TRUE)
 ```
 
+![](slides_files/figure-html/unnamed-chunk-8-1.png) 
+
+```
+## [1] 59 43
+```
+
 ## 6.2.b
 
-```{r}
+
+```r
 BernBeta(priorBetaAB = c(59, 43),
          Data = c(rep(1, 57), rep(0, 100 - 57)),
          showHDI = TRUE)
 ```
 
+![](slides_files/figure-html/unnamed-chunk-9-1.png) 
+
+```
+## [1] 116  86
+```
+
 ## 6.3
 
-```{r}
+
+```r
 BernBeta(priorBetaAB = c(1, 1),
          Data = c(rep(1, 40), rep(0, 10)),
          showHDI = TRUE)
 ```
 
+![](slides_files/figure-html/unnamed-chunk-10-1.png) 
+
+```
+## [1] 41 11
+```
+
 ## 6.3, cont.
 
-```{r}
+
+```r
 BernBeta(priorBetaAB = c(1, 1),
          Data = c(rep(1, 15), rep(0, 35)),
          showHDI = TRUE)
 ```
 
+![](slides_files/figure-html/unnamed-chunk-11-1.png) 
+
+```
+## [1] 16 36
+```
+
 ## 6.4
 
-```{r}
+
+```r
 BernBeta(priorBetaAB = c(.01, .01),
          Data = c(1, 1, 1, 1, 0),
          showHDI = TRUE)
 ```
 
+![](slides_files/figure-html/unnamed-chunk-12-1.png) 
+
+```
+## [1] 4.01 1.01
+```
+
 ## 6.5.a
 
-```{r}
+
+```r
 BernBeta(priorBetaAB = c(50, 50),
          Data = c(rep(1, 9), 0),
          showHDI = TRUE)
 ```
 
+![](slides_files/figure-html/unnamed-chunk-13-1.png) 
+
+```
+## [1] 59 51
+```
+
 ## 6.5.a
 
-```{r}
+
+```r
 BernBeta(priorBetaAB = c(.01, .01),
          Data = c(rep(1, 9), 0),
          showHDI = TRUE)
+```
+
+![](slides_files/figure-html/unnamed-chunk-14-1.png) 
+
+```
+## [1] 9.01 1.01
 ```
